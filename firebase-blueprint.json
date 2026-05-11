@@ -1,0 +1,131 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System user with role-based access",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "businessName": { "type": "string" },
+        "businessPhone": { "type": "string" },
+        "businessWebsite": { "type": "string" },
+        "businessAddress": { "type": "string" },
+        "businessGstin": { "type": "string" },
+        "invoicePrefix": { "type": "string" },
+        "invoiceTerms": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "staff"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "InventoryItem": {
+      "title": "Inventory Item",
+      "description": "Product or service in stock",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "sku": { "type": "string" },
+        "price": { "type": "number" },
+        "costPrice": { "type": "number" },
+        "quantity": { "type": "number" },
+        "gstRate": { "type": "number" },
+        "category": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "price", "quantity"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "Billing record for sales",
+      "type": "object",
+      "properties": {
+        "invoiceNumber": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "subtotal": { "type": "number" },
+        "totalGst": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "totalProfit": { "type": "number" },
+        "status": { "type": "string", "enum": ["paid", "pending", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["invoiceNumber", "totalAmount", "createdAt"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Client information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "gstNumber": { "type": "string" },
+        "address": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "InventoryLog": {
+      "title": "Inventory Log",
+      "description": "Historical record of changes to an inventory item",
+      "type": "object",
+      "properties": {
+        "itemId": { "type": "string" },
+        "businessId": { "type": "string" },
+        "type": { "type": "string", "enum": ["stock_update", "price_update", "sale", "initial", "edit"] },
+        "field": { "type": "string" },
+        "oldValue": { "type": "number" },
+        "newValue": { "type": "number" },
+        "description": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["itemId", "type", "timestamp"]
+    },
+    "Currency": {
+      "title": "Currency",
+      "description": "Currency configuration for a business",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "symbol": { "type": "string" },
+        "exchangeRate": { "type": "number" },
+        "isBase": { "type": "boolean" },
+        "businessId": { "type": "string" }
+      },
+      "required": ["code", "symbol", "exchangeRate", "businessId"]
+    }
+  },
+  "firestore": {
+    "/currencies/{currencyId}": {
+      "schema": "Currency",
+      "description": "Business currency settings"
+    },
+    "/inventoryLogs/{logId}": {
+      "schema": "InventoryLog",
+      "description": "History of inventory changes"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/inventory/{itemId}": {
+      "schema": "InventoryItem",
+      "description": "Stock items"
+    },
+    "/invoices/{invoiceId}": {
+      "schema": "Invoice",
+      "description": "Sales records"
+    },
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "Customer database"
+    }
+  }
+}

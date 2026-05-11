@@ -1,0 +1,6 @@
+{
+  "name": "Billcore",
+  "description": "Professional Inventory and Billing System with GST compliance, role-based access, and real-time sales analytics.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": []
+}
