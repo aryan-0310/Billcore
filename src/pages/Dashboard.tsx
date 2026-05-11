@@ -361,7 +361,7 @@ export default function Dashboard() {
     <div className="min-h-full bg-[#f8fafc] text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 pb-20">
       {/* Immersive Dashboard Header */}
       <div className="bg-white border-b border-slate-200/60 sticky top-0 z-40 backdrop-blur-xl bg-white/80">
-        <div className="max-w-[1600px] mx-auto px-8 h-24 flex items-center justify-between">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-8 h-20 md:h-24 flex items-center justify-between">
           <div className="flex items-center gap-10">
             <div>
               <h1 className="text-3xl font-black text-slate-900 tracking-tighter uppercase leading-none">
@@ -387,7 +387,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="max-w-[1600px] mx-auto px-8 mt-10 space-y-10">
+      <div className="max-w-[1600px] mx-auto px-4 md:px-8 mt-6 md:mt-10 space-y-6 md:space-y-10">
         {/* Plan Upgrade Banner - Sophisticated Floating Style */}
         <AnimatePresence>
           {(profile?.plan === 'starter' || !profile?.plan) && invoices.length >= 40 && (
@@ -395,7 +395,7 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="p-8 bg-slate-900 rounded-[3rem] text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-3xl relative overflow-hidden ring-1 ring-white/10"
+              className="p-6 md:p-8 bg-slate-900 rounded-[2.5rem] md:rounded-[3rem] text-white flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 shadow-3xl relative overflow-hidden ring-1 ring-white/10"
             >
               <div className="flex items-center gap-8 relative z-10">
                 <div className="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-blue-500/40 shrink-0">

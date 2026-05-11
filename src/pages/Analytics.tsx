@@ -148,7 +148,7 @@ export default function Analytics() {
   };
 
   return (
-    <div className="p-8 space-y-10 bg-slate-50/50 min-h-screen">
+    <div className="p-4 md:p-8 space-y-6 md:space-y-10 bg-slate-50/50 min-h-screen">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tighter uppercase leading-none">
@@ -179,7 +179,7 @@ export default function Analytics() {
       {/* Hero Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, idx) => (
-          <div key={idx} className={cn("p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 transition-all hover:shadow-md", stat.bg)}>
+          <div key={idx} className={cn("p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 transition-all hover:shadow-md", stat.bg)}>
             <div className="flex justify-between items-start">
                <div className="w-10 h-10 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center">
                   <stat.icon className={cn("w-5 h-5", stat.color)} />
@@ -202,7 +202,7 @@ export default function Analytics() {
 
       <div className="grid grid-cols-1 gap-6">
         {/* Trend Area Chart */}
-        <div className="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm space-y-8">
+        <div className="p-5 md:p-8 bg-white rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm space-y-8">
            <div className="flex justify-between items-center">
               <div className="space-y-1">
                  <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Revenue Trends</h3>
@@ -270,7 +270,7 @@ export default function Analytics() {
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Daily Performance Bar Chart */}
-          <div className="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm space-y-8">
+          <div className="p-5 md:p-8 bg-white rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm space-y-8">
             <div className="space-y-1">
                <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Daily Performance</h3>
                <p className="text-slate-400 text-xs font-semibold tracking-tight italic">Side-by-side comparison of daily revenue and net profit.</p>
@@ -301,7 +301,7 @@ export default function Analytics() {
           </div>
 
           {/* Activity List */}
-          <div className="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col h-full">
+          <div className="p-5 md:p-8 bg-white rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm flex flex-col h-full">
             <h3 className="text-xl font-extrabold text-slate-900 mb-8 tracking-tight">Recent Invoices</h3>
             <div className="space-y-6 flex-1 overflow-y-auto pr-2 min-h-[300px] custom-scrollbar">
                {filteredInvoices.slice(0, 10).map((inv) => (

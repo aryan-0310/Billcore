@@ -379,7 +379,7 @@ export default function Inventory() {
   };
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 md:p-8 space-y-6 md:space-y-8">
       {/* Plan Limit Warning Banner */}
       <AnimatePresence>
         {(isOverLimit || isNearLimit) && (
@@ -645,7 +645,7 @@ export default function Inventory() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-slate-50 border-b border-slate-100">
               <tr>
@@ -794,6 +794,93 @@ export default function Inventory() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile View: Cards */}
+      <div className="md:hidden space-y-4 px-1 pb-10">
+        {filteredItems.map((item) => (
+          <div 
+            key={item.id}
+            onClick={() => {
+              setSelectedItem(item);
+              setIsDetailsModalOpen(true);
+            }}
+            className="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm space-y-4 active:scale-[0.98] transition-transform"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-slate-400">
+                  {item.name[0]}
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-slate-900">{item.name}</h4>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{item.category}</p>
+                </div>
+              </div>
+              <div className={cn(
+                "px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest",
+                item.quantity <= 0 ? "bg-rose-50 text-rose-600" :
+                item.quantity < (item.minThreshold || 10) ? "bg-amber-50 text-amber-600" : "bg-emerald-50 text-emerald-600"
+              )}>
+                {item.quantity} In Stock
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+              <div className="flex gap-4">
+                <div>
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Price</p>
+                  <p className="text-sm font-black text-blue-600 tracking-tight">{formatCurrency(item.price)}</p>
+                </div>
+                {isAdmin && (
+                  <div>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Cost</p>
+                    <p className="text-xs font-bold text-slate-500 tracking-tight">{formatCurrency(item.costPrice)}</p>
+                  </div>
+                )}
+              </div>
+              <div className="flex gap-2">
+                {isAdmin && (
+                  <>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingItem({
+                          ...item,
+                          price: item.price.toString(),
+                          costPrice: item.costPrice.toString(),
+                          quantity: item.quantity.toString(),
+                          gstRate: item.gstRate.toString()
+                        });
+                        setIsEditModalOpen(true);
+                      }}
+                      className="p-2 text-slate-400 hover:text-blue-600 bg-slate-50 rounded-lg"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteItem(item.id);
+                      }}
+                      className="p-2 text-slate-400 hover:text-rose-600 bg-slate-50 rounded-lg"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+        {filteredItems.length === 0 && (
+          <div className="py-20 text-center space-y-4 bg-white rounded-[2rem] border border-slate-100">
+            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto border border-slate-100">
+               <Package className="w-8 h-8 text-slate-200" />
+            </div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No matching products</p>
+          </div>
+        )}
       </div>
 
       {/* Add Modal */}

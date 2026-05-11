@@ -55,7 +55,7 @@ const PlanCard = ({
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
       className={cn(
-        "relative p-8 rounded-[3rem] border transition-all duration-500 flex flex-col h-full bg-white",
+        "relative p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] border transition-all duration-500 flex flex-col h-full bg-white",
         isPopular ? "border-blue-600 shadow-2xl shadow-blue-100" : "border-slate-100 shadow-sm hover:shadow-xl",
         isCurrent && "ring-4 ring-blue-500/20"
       )}
@@ -297,13 +297,13 @@ export default function Plan() {
   ];
 
   return (
-    <div className="p-8 space-y-16 bg-slate-50/30 min-h-screen">
+    <div className="p-4 md:p-12 space-y-10 md:space-y-16 bg-slate-50/30 min-h-screen">
       {/* Header Section */}
       <div className="max-w-4xl">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-blue-100">
           Subscription Hub
         </div>
-        <h1 className="text-5xl font-black text-slate-900 tracking-tight leading-none mb-6">
+        <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-none mb-6">
           Architect Your <span className="text-blue-600">Business Scaling.</span>
         </h1>
         <p className="text-slate-500 text-lg font-bold leading-relaxed max-w-2xl">
@@ -332,7 +332,7 @@ export default function Plan() {
       </div>
 
       {/* Trust Banner */}
-      <div className="bg-slate-900 rounded-[3rem] p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+      <div className="bg-slate-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="relative z-10 space-y-4 text-center md:text-left">
           <div className="flex justify-center md:justify-start items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-emerald-400" />

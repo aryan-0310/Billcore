@@ -130,7 +130,7 @@ export default function Staff() {
     <div className="flex h-screen bg-[#F8FAFC]">
       {/* Main Panel */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="px-8 pt-8 pb-6 bg-white border-b border-slate-100 flex justify-between items-end">
+        <header className="px-4 md:px-8 pt-8 pb-6 bg-white border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></div>
@@ -141,13 +141,13 @@ export default function Staff() {
             </h1>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
              <div className="relative">
                 <Search className="absolute left-4 top-3 text-slate-400 w-4 h-4" />
                 <input 
                   type="text" 
                   placeholder="Query personnel..."
-                  className="pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/10 font-bold w-64 transition-all focus:w-80"
+                  className="pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/10 font-bold w-full md:w-64 transition-all md:focus:w-80"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -164,9 +164,9 @@ export default function Staff() {
           </div>
         </header>
 
-        <div className="flex-1 p-8 overflow-y-auto space-y-8 scrollbar-hide">
+        <div className="flex-1 p-4 md:p-8 overflow-y-auto space-y-8 scrollbar-hide">
           {/* Stats Bar */}
-          <div className="grid grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
              {[
                { label: 'Personnel Count', value: staff.length, sub: 'All business nodes', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
                { label: 'Integrity Rating', value: '98.2%', sub: 'Based on activity', icon: Shield, color: 'text-emerald-600', bg: 'bg-emerald-50' },
@@ -263,7 +263,7 @@ export default function Staff() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="w-[480px] bg-white border-l border-slate-100 shadow-2xl z-40 flex flex-col"
+            className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-white border-l border-slate-100 shadow-2xl z-[60] flex flex-col"
           >
             <div className="p-10 flex-1 overflow-y-auto scrollbar-hide">
                <button 

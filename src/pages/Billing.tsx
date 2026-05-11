@@ -657,7 +657,7 @@ export default function Billing() {
   };
 
   return (
-    <div className="flex-1 bg-[#F8FAFC] min-h-screen p-12 font-sans overflow-y-auto">
+    <div className="flex-1 bg-[#F8FAFC] min-h-screen p-4 md:p-12 font-sans overflow-y-auto">
       {/* Page Title & Usage Meter */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
         <div>
@@ -671,7 +671,7 @@ export default function Billing() {
 
         {/* Usage Meter */}
         {!isAccountant && (profile?.plan === 'starter' || !profile?.plan) && (
-          <div className="p-6 bg-white rounded-[2rem] border border-slate-100 shadow-sm min-w-[280px] w-full md:w-auto">
+          <div className="p-6 bg-white rounded-[1.5rem] md:rounded-[2rem] border border-slate-100 shadow-sm min-w-[280px] w-full md:w-auto">
             <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
@@ -701,10 +701,10 @@ export default function Billing() {
       <div className="flex flex-col lg:flex-row gap-10">
         {/* Left Column - Forms */}
         {canCreateBills ? (
-          <div className="flex-1 space-y-10">
+          <div className="flex-1 space-y-6 md:space-y-10">
             
             {/* Customer Information Card */}
-          <div className="bg-white rounded-[2.5rem] p-10 shadow-sm border border-slate-50">
+          <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-10 shadow-sm border border-slate-50">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center text-rose-600">
                 <UserPlus className="w-6 h-6" />
@@ -1030,10 +1030,10 @@ export default function Billing() {
         )}
 
         {/* Right Column - Sidebar & Preview */}
-        <div className="w-full lg:w-96 space-y-8">
+        <div className="w-full lg:w-96 space-y-6 md:space-y-8">
           
           {/* Live Preview Card */}
-          <div className="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-100 flex flex-col">
+          <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-100 flex flex-col">
             <div className="bg-[#1E293B] p-8 pb-10">
               <div className="flex justify-between items-start text-white mb-6">
                 <div>
@@ -1272,7 +1272,7 @@ export default function Billing() {
            </div>
         </div>
 
-        <div className="bg-white rounded-[1.5rem] border border-slate-50 shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden">
+        <div className="hidden md:block bg-white rounded-[1.5rem] border border-slate-50 shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden">
           <div className="grid grid-cols-5 px-8 py-5 bg-slate-50/50 border-b border-slate-50">
             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest col-span-1">Invoice ID</span>
             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest col-span-1">Client</span>
@@ -1334,6 +1334,60 @@ export default function Billing() {
                 })
             )}
           </div>
+        </div>
+
+        {/* Mobile Ledger: Cards */}
+        <div className="md:hidden space-y-4">
+          {filteredInvoices.length === 0 ? (
+            <div className="px-8 py-20 text-center bg-white rounded-3xl border border-slate-100">
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No transactions found</p>
+            </div>
+          ) : (
+            filteredInvoices
+              .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+              .map((inv) => {
+                const status = inv.status?.toLowerCase();
+                const today = new Date();
+                const dueDate = new Date(inv.dueDate);
+                const isOverdue = dueDate < today && status !== 'paid';
+
+                return (
+                  <div 
+                    key={inv.id}
+                    onClick={() => {
+                      setViewingInvoice(inv);
+                      setIsInvoiceOpen(true);
+                    }}
+                    className="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm space-y-4 active:scale-[0.98] transition-transform"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                          <Receipt className="w-5 h-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-black text-slate-900 tracking-tight">#{inv.invoiceNumber}</h4>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate max-w-[120px]">{inv.customerName}</p>
+                        </div>
+                      </div>
+                      <div className={cn(
+                        "px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest",
+                        isOverdue ? "bg-rose-50 text-rose-600" :
+                        status === 'paid' ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600"
+                      )}>
+                        {isOverdue ? 'Overdue' : inv.status}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        {new Date(inv.issueDate || inv.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                      </p>
+                      <p className="text-sm font-black text-blue-600 tracking-tight">{formatCurrency(inv.totalAmount)}</p>
+                    </div>
+                  </div>
+                );
+              })
+          )}
         </div>
 
         {/* Export Queue Banner */}

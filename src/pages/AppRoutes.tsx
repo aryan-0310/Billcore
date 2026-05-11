@@ -17,7 +17,9 @@ import {
   Building,
   Zap,
   AlertTriangle,
-  ArrowRight
+  ArrowRight,
+  Menu,
+  X
 } from 'lucide-react';
 import { useAuth, PLAN_LIMITS } from '../context/AuthContext';
 import { collection, query, onSnapshot, where } from 'firebase/firestore';
@@ -49,6 +51,7 @@ function DashboardLayout() {
   const location = useLocation();
   const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
   const [isMoreOpen, setIsMoreOpen] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [counts, setCounts] = React.useState({ invoices: 0, inventory: 0 });
 
   React.useEffect(() => {
@@ -133,10 +136,17 @@ function DashboardLayout() {
 
       {/* Top Header */}
       <header className={cn(
-        "h-20 border-b border-slate-100 px-8 md:px-12 flex items-center justify-between bg-white/80 backdrop-blur-md z-50 sticky p-0",
+        "h-20 border-b border-slate-100 px-4 md:px-12 flex items-center justify-between bg-white/80 backdrop-blur-md z-50 sticky p-0",
         (isOverLimit || isNearLimit) ? "top-[45px]" : "top-0"
       )}>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 md:gap-8">
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="lg:hidden p-2 text-slate-400 hover:text-slate-900 transition-all"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+
           <Link to="/dashboard" className="flex items-center gap-3">
             <div className="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center text-white text-xl font-black">
               {profile?.businessName?.[0] || profile?.displayName?.[0] || 'L'}
@@ -312,6 +322,90 @@ function DashboardLayout() {
             </div>
           </div>
         </header>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60]"
+            />
+            <motion.div 
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 left-0 w-[280px] bg-white z-[70] shadow-2xl p-6 flex flex-col"
+            >
+              <div className="flex items-center justify-between mb-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center text-white text-xl font-black">
+                    {profile?.businessName?.[0] || profile?.displayName?.[0] || 'L'}
+                  </div>
+                  <div className="text-xl font-black tracking-tighter text-slate-900">
+                    {profile?.businessName || 'Billcore'}
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 text-slate-400 hover:text-slate-900 transition-all"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <nav className="space-y-2 flex-1 overflow-y-auto">
+                {allNavItems.map((item) => (
+                  <Link 
+                    key={item.path}
+                    to={item.path} 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "flex items-center gap-4 px-4 py-4 rounded-2xl transition-all font-black text-sm",
+                      location.pathname === item.path 
+                        ? "bg-rose-50 text-rose-600" 
+                        : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                    )}
+                  >
+                    <item.icon className="w-5 h-5" />
+                    {item.name}
+                  </Link>
+                ))}
+              </nav>
+
+              <div className="pt-6 border-t border-slate-100 space-y-4">
+                <div className="flex items-center gap-3 px-4">
+                  <div className="w-10 h-10 rounded-full border-2 border-slate-100 overflow-hidden bg-slate-100">
+                    {profile?.photoURL ? (
+                      <img src={profile.photoURL} alt="User" className="w-full h-full object-cover" />
+                    ) : (
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile?.displayName || 'Felix'}`} alt="User" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-black text-slate-900 truncate">{profile?.displayName}</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">{profile?.role}</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    signOut();
+                  }}
+                  className="w-full flex items-center gap-4 px-4 py-4 text-red-500 hover:bg-red-50 rounded-2xl transition-all font-black text-sm"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Logout
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-[1440px] mx-auto min-h-full">

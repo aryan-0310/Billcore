@@ -240,7 +240,7 @@ export default function Parties() {
   return (
     <div className="h-full flex flex-col overflow-hidden bg-slate-50/30">
       {/* Header Area */}
-      <div className="p-8 border-b border-slate-100 bg-white flex justify-between items-center z-10 shadow-sm shrink-0">
+      <div className="p-4 md:p-8 border-b border-slate-100 bg-white flex flex-col md:flex-row justify-between items-start md:items-center gap-6 z-10 shadow-sm shrink-0">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-lg">
             <Users className="w-6 h-6" />
@@ -253,9 +253,10 @@ export default function Parties() {
               {parties.length} Nodes Synchronized in Network
             </p>
           </div>
+          </div>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
           <div className="flex p-1 bg-slate-50 rounded-xl border border-slate-100 mr-2">
             {(['all', 'customer', 'vendor'] as const).map((type) => (
               <button 
@@ -282,9 +283,12 @@ export default function Parties() {
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden relative">
         {/* Sidebar Panel - Party List */}
-        <div className="w-80 border-r border-slate-100 bg-white flex flex-col shrink-0">
+        <div className={cn(
+          "w-full lg:w-80 border-r border-slate-100 bg-white flex flex-col shrink-0",
+          selectedParty ? "hidden lg:flex" : "flex"
+        )}>
           <div className="p-4 border-b border-slate-50">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 w-4 h-4" />
@@ -352,11 +356,23 @@ export default function Parties() {
         </div>
 
         {/* Main Intelligence Panel */}
-        <div className="flex-1 overflow-y-auto bg-slate-50/30 custom-scrollbar p-8">
+        <div className={cn(
+          "flex-1 overflow-y-auto bg-slate-50/30 custom-scrollbar",
+          !selectedParty ? "hidden lg:block" : "block"
+        )}>
+          {selectedParty && (
+            <button 
+              onClick={() => setSelectedParty(null)}
+              className="lg:hidden m-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back to Registry
+            </button>
+          )}
+          <div className="p-4 md:p-8">
           {selectedParty ? (
              <div className="max-w-5xl mx-auto space-y-8 pb-20">
                {/* Party Hero Card */}
-               <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm relative overflow-hidden group">
+                <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-10 border border-slate-100 shadow-sm relative overflow-hidden group">
                  <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full translate-x-32 -translate-y-32 group-hover:scale-110 transition-transform duration-700" />
                  
                  <div className="relative flex justify-between items-start">
@@ -790,7 +806,7 @@ export default function Parties() {
                                   </div>
 
                                   <div className="mt-6 p-6 bg-slate-900 rounded-3xl text-white flex justify-between items-center">
-                                    <div className="flex gap-8">
+                                    <div className="flex flex-col sm:flex-row gap-6 md:gap-8">
                                       <div>
                                         <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Subtotal</div>
                                         <div className="text-sm font-black">{formatCurrency(invoice.subtotal)}</div>
